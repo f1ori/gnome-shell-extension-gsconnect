@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 import Gdk from 'gi://Gdk';
-import GdkPixbuf from 'gi://GdkPixbuf';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
@@ -191,11 +190,11 @@ export const Window = GObject.registerClass({
         );
 
         // HeaderBar (Service Name)
-        this.headerbar.title = this.settings.get_string('name');
-        this.rename_entry.text = this.headerbar.title;
+        this.title = this.settings.get_string('name');
+        this.rename_entry.text = this.title;
 
         // Scroll with keyboard focus
-        this.service_box.set_focus_vadjustment(this.service_window.vadjustment);
+        //this.service_box.set_focus_vadjustment(this.service_window.vadjustment);
 
         // Device List
         this.device_list.set_header_func(rowSeparators);
@@ -240,7 +239,8 @@ export const Window = GObject.registerClass({
         this.settings.set_boolean('show-indicators', (mode === 'panel'));
     }
 
-    vfunc_delete_event(event) {
+    delete_event(event) {
+        // TODO connect somewhere
         if (this.service) {
             this.service.disconnect(this._deviceAddedId);
             this.service.disconnect(this._deviceRemovedId);
@@ -359,11 +359,9 @@ export const Window = GObject.registerClass({
                     'Frank Dana <ferdnyc@gmail.com>',
                 ],
                 comments: _('A complete KDE Connect implementation for GNOME'),
-                logo: GdkPixbuf.Pixbuf.new_from_resource_at_scale(
-                    '/org/gnome/Shell/Extensions/GSConnect/icons/org.gnome.Shell.Extensions.GSConnect.svg',
-                    128,
-                    128,
-                    true
+                logo: Gdk.Texture.new_from_resource(
+                    '/org/gnome/Shell/Extensions/GSConnect/icons/org.gnome.Shell.Extensions.GSConnect.svg'
+                    // TODO scale?
                 ),
                 program_name: 'GSConnect',
                 // TRANSLATORS: eg. 'Translator Name <your.email@domain.com>'
@@ -376,8 +374,8 @@ export const Window = GObject.registerClass({
             });
 
             // Persist
-            this._about.connect('response', (dialog) => dialog.hide_on_delete());
-            this._about.connect('delete-event', (dialog) => dialog.hide_on_delete());
+            //this._about.connect('response', (dialog) => dialog.hide_on_delete());
+            //this._about.connect('delete-event', (dialog) => dialog.hide_on_delete());
         }
 
         this._about.present();

@@ -120,8 +120,9 @@ export const InputDialog = GObject.registerClass({
             this._onInsertText.bind(this)
         );
 
-        this.infobar.connect('notify::reveal-child', this._onState.bind(this));
-        this.plugin.bind_property('state', this.infobar, 'reveal-child', 6);
+        // TODO removed grab, anything also to do?
+        //this.infobar.connect('notify::reveal-child', this._onState.bind(this));
+        //this.plugin.bind_property('state', this.infobar, 'reveal-child', 6);
 
         // Mouse Pad
         this._resetTouchpadMotion();
@@ -134,19 +135,8 @@ export const InputDialog = GObject.registerClass({
         this.show_all();
     }
 
-    vfunc_delete_event(event) {
-        this._ungrab();
-        return this.hide_on_delete();
-    }
-
-    vfunc_grab_broken_event(event) {
-        if (event.keyboard)
-            this._ungrab();
-
-        return false;
-    }
-
-    vfunc_key_release_event(event) {
+    key_release_event(event) {
+        // TODO connect to event controller
         if (!this.plugin.state)
             debug('ignoring remote keyboard state');
 
@@ -157,11 +147,10 @@ export const InputDialog = GObject.registerClass({
         this.ctrl_label.sensitive = !isCtrl(keyvalLower) && (realMask & Gdk.ModifierType.CONTROL_MASK);
         this.shift_label.sensitive = !isShift(keyvalLower) && (realMask & Gdk.ModifierType.SHIFT_MASK);
         this.super_label.sensitive = !isSuper(keyvalLower) && (realMask & Gdk.ModifierType.SUPER_MASK);
-
-        return super.vfunc_key_release_event(event);
     }
 
-    vfunc_key_press_event(event) {
+    key_press_event(event) {
+        // TODO connect!
         if (!this.plugin.state)
             debug('ignoring remote keyboard state');
 
@@ -224,12 +213,13 @@ export const InputDialog = GObject.registerClass({
 
         // Pass these key combinations rather than using the echo reply
         if (request.alt || request.ctrl || request.super)
-            return super.vfunc_key_press_event(event);
+            return true; // TODO super.vfunc_key_press_event(event);
 
         return false;
     }
 
-    vfunc_scroll_event(event) {
+    scroll_event(event) {
+        // connect
         if (event.delta_x === 0 && event.delta_y === 0)
             return true;
 
@@ -242,18 +232,6 @@ export const InputDialog = GObject.registerClass({
             },
         });
         return true;
-    }
-
-    vfunc_window_state_event(event) {
-        if (!this.plugin.state)
-            debug('ignoring remote keyboard state');
-
-        if (event.new_window_state & Gdk.WindowState.FOCUSED)
-            this._grab();
-        else
-            this._ungrab();
-
-        return super.vfunc_window_state_event(event);
     }
 
     _onInsertText(buffer, location, text, len) {
@@ -279,50 +257,6 @@ export const InputDialog = GObject.registerClass({
                 },
             });
         }
-    }
-
-    _onState(widget) {
-        if (!this.plugin.state)
-            debug('ignoring remote keyboard state');
-
-        if (this.is_active)
-            this._grab();
-        else
-            this._ungrab();
-    }
-
-    _grab() {
-        if (!this.visible || this._keyboard)
-            return;
-
-        const seat = Gdk.Display.get_default().get_default_seat();
-        const status = seat.grab(
-            this.get_window(),
-            Gdk.SeatCapabilities.KEYBOARD,
-            false,
-            null,
-            null,
-            null
-        );
-
-        if (status !== Gdk.GrabStatus.SUCCESS) {
-            logError(new Error('Grabbing keyboard failed'));
-            return;
-        }
-
-        this._keyboard = seat.get_keyboard();
-        this.grab_add();
-        this.entry.has_focus = true;
-    }
-
-    _ungrab() {
-        if (this._keyboard) {
-            this._keyboard.get_seat().ungrab();
-            this._keyboard = null;
-            this.grab_remove();
-        }
-
-        this.entry.buffer.text = '';
     }
 
     _resetTouchpadMotion() {

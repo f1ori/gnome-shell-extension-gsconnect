@@ -93,7 +93,11 @@ SPDX-License-Identifier: GPL-2.0-or-later
         <signal name="activate" handler="_onSendMessage" swapped="no"/>
         <signal name="changed" handler="_onEntryChanged" swapped="no"/>
         <signal name="icon-release" handler="_onSendMessage" swapped="no"/>
-        <signal name="key-release-event" handler="_onKeyPressEvent" swapped="no"/>
+        <child>
+          <object class="EventControllerKey">
+            <signal name="key-released" handler="_onKeyPressEvent" swapped="no"/>
+          </object>
+        </child>
         <child internal-child="accessible">
           <object class="AtkObject">
             <property name="AtkObject::accessible-name" translatable="yes">Message Entry</property>

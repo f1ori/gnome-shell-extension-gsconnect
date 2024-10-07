@@ -187,13 +187,15 @@ const Dialog = GObject.registerClass({
         this.show_all();
     }
 
-    vfunc_key_press_event(event) {
+    key_press_event(event) {
+        // TODO register
         this.response(Gtk.ResponseType.DELETE_EVENT);
 
         return Gdk.EVENT_STOP;
     }
 
-    vfunc_motion_notify_event(event) {
+    motion_notify_event(event) {
+        // TODO register
         this.response(Gtk.ResponseType.DELETE_EVENT);
 
         return Gdk.EVENT_STOP;

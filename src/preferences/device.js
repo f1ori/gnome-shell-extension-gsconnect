@@ -527,8 +527,8 @@ export const Panel = GObject.registerClass({
         this.share_list.set_header_func(rowSeparators);
 
         // Scroll with keyboard focus
-        const sharing_box = this.sharing_page.get_child().get_child();
-        sharing_box.set_focus_vadjustment(this.sharing_page.vadjustment);
+        //const sharing_box = this.sharing_page.get_child().get_child();
+        //sharing_box.set_focus_vadjustment(this.sharing_page.vadjustment);
 
         // Continue focus chain between lists
         this.desktop_list.next = this.share_list;
@@ -630,8 +630,8 @@ export const Panel = GObject.registerClass({
      */
     _runcommandSettings() {
         // Scroll with keyboard focus
-        const runcommand_box = this.runcommand_page.get_child().get_child();
-        runcommand_box.set_focus_vadjustment(this.runcommand_page.vadjustment);
+        //const runcommand_box = this.runcommand_page.get_child().get_child();
+        //runcommand_box.set_focus_vadjustment(this.runcommand_page.vadjustment);
 
         // Local Command List
         const settings = this.pluginSettings('runcommand');
@@ -793,8 +793,8 @@ export const Panel = GObject.registerClass({
         this.notification_list.set_header_func(rowSeparators);
 
         // Scroll with keyboard focus
-        const notification_box = this.notification_page.get_child().get_child();
-        notification_box.set_focus_vadjustment(this.notification_page.vadjustment);
+        //const notification_box = this.notification_page.get_child().get_child();
+        //notification_box.set_focus_vadjustment(this.notification_page.vadjustment);
 
         // Continue focus chain between lists
         this.notification_list.next = this.notification_apps;
@@ -908,8 +908,8 @@ export const Panel = GObject.registerClass({
      */
     _keybindingSettings() {
         // Scroll with keyboard focus
-        const shortcuts_box = this.shortcuts_page.get_child().get_child();
-        shortcuts_box.set_focus_vadjustment(this.shortcuts_page.vadjustment);
+        //const shortcuts_box = this.shortcuts_page.get_child().get_child();
+        //shortcuts_box.set_focus_vadjustment(this.shortcuts_page.vadjustment);
 
         // Filter & Sort
         this.shortcuts_actions_list.set_filter_func(this._filterPluginKeybindings.bind(this));
@@ -1015,8 +1015,8 @@ export const Panel = GObject.registerClass({
      */
     _advancedSettings() {
         // Scroll with keyboard focus
-        const advanced_box = this.advanced_page.get_child().get_child();
-        advanced_box.set_focus_vadjustment(this.advanced_page.vadjustment);
+        //const advanced_box = this.advanced_page.get_child().get_child();
+        //advanced_box.set_focus_vadjustment(this.advanced_page.vadjustment);
 
         // Sort & Separate
         this.plugin_list.set_header_func(rowSeparators);

@@ -62,8 +62,8 @@ const Clipboard = GObject.registerClass({
         if (typeof content !== 'string')
             return;
 
-        if (this._clipboard instanceof Gtk.Clipboard)
-            this._clipboard.set_text(content, -1);
+        if (this._clipboard instanceof Gdk.Clipboard)
+            this._clipboard.set_text(content);
 
         if (this._clipboard instanceof Gio.DBusProxy) {
             this._clipboard.call('SetText', new GLib.Variant('(s)', [content]),
@@ -74,7 +74,7 @@ const Clipboard = GObject.registerClass({
 
     async _onNameAppeared(connection, name, name_owner) {
         try {
-            // Cleanup the GtkClipboard
+            // Cleanup the GdkClipboard
             if (this._clipboard && this._ownerChangeId > 0) {
                 this._clipboard.disconnect(this._ownerChangeId);
                 this._ownerChangeId = 0;
@@ -124,7 +124,7 @@ const Clipboard = GObject.registerClass({
         }
 
         const display = Gdk.Display.get_default();
-        this._clipboard = Gtk.Clipboard.get_default(display);
+        this._clipboard = display.get_clipboard();
 
         this._ownerChangeId = this._clipboard.connect('owner-change',
             this._onOwnerChange.bind(this));
@@ -177,7 +177,7 @@ const Clipboard = GObject.registerClass({
     }
 
     /*
-     * GtkClipboard
+     * GdkClipboard
      */
     async _gtkUpdateText() {
         const mimetypes = await new Promise((resolve, reject) => {

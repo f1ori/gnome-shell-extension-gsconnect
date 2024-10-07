@@ -876,7 +876,8 @@ export const Window = GObject.registerClass({
         this.restoreGeometry('messaging');
     }
 
-    vfunc_delete_event(event) {
+    delete_event(event) {
+        // TODO connect somewhere
         this.saveGeometry();
 
         GLib.source_remove(this._timestampThreadsId);

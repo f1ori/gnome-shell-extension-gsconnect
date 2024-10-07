@@ -188,6 +188,8 @@ export const Avatar = GObject.registerClass({
         });
 
         this.contact = contact;
+
+        this.set_draw_func(this.draw);
     }
 
     get rgba() {
@@ -272,12 +274,12 @@ export const Avatar = GObject.registerClass({
         }
     }
 
-    vfunc_draw(cr) {
+    draw(cr, width, height) {
         if (!this._surface)
             this._loadSurface();
 
         // Clip to a circle
-        const rad = this.width_request / 2;
+        const rad = this.width / 2;
         cr.arc(rad, rad, rad, 0, 2 * Math.PI);
         cr.clipPreserve();
 
@@ -290,9 +292,6 @@ export const Avatar = GObject.registerClass({
         // Draw the avatar/icon
         cr.setSourceSurface(this._surface, this._offset, this._offset);
         cr.paint();
-
-        cr.$dispose();
-        return Gdk.EVENT_PROPAGATE;
     }
 });
 

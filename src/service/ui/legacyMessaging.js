@@ -124,7 +124,8 @@ const Dialog = GObject.registerClass({
         dialog.device.disconnect(dialog._connectedId);
     }
 
-    vfunc_delete_event() {
+    delete_event() {
+        // connect somewhere
         this.saveGeometry();
 
         return false;

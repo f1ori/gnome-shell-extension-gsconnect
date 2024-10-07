@@ -87,7 +87,7 @@ SPDX-License-Identifier: GPL-2.0-or-later
             <property name="halign">fill</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkEventBox" id="touchpad-eventbox">
+              <object class="GtkWidget" id="touchpad-eventbox">
                 <child>
                   <object class="GtkLabel">
                     <property name="can_focus">False</property>
@@ -100,6 +100,20 @@ Press long to drag to drag mouse cursor.
 
 Simple click will be sent to paired device.
 Left, middle, right button, and wheel scrolls.</property>
+                  </object>
+
+                  <!-- Touchpad Gestures -->
+                  <object class="GtkGestureDrag" id="touchpad-drag">
+                    <signal name="begin" handler="_onTouchpadDragBegin"/>
+                    <signal name="drag-update" handler="_onTouchpadDragUpdate"/>
+                    <signal name="end" handler="_onTouchpadDragEnd"/>
+                  </object>
+
+                  <object class="GtkGestureLongPress" id="touchpad-long-press">
+                    <property name="button">0</property>
+                    <signal name="cancelled" handler="_onTouchpadLongPressCancelled"/>
+                    <signal name="pressed" handler="_onTouchpadLongPressPressed"/>
+                    <signal name="end" handler="_onTouchpadLongPressEnd"/>
                   </object>
                 </child>
               </object>
@@ -249,20 +263,4 @@ Left, middle, right button, and wheel scrolls.</property>
       </object>
     </child>
   </template>
-
-  <!-- Touchpad Gestures -->
-  <object class="GtkGestureDrag" id="touchpad-drag">
-    <property name="widget">touchpad-eventbox</property>
-    <signal name="begin" handler="_onTouchpadDragBegin"/>
-    <signal name="drag-update" handler="_onTouchpadDragUpdate"/>
-    <signal name="end" handler="_onTouchpadDragEnd"/>
-  </object>
-
-  <object class="GtkGestureLongPress" id="touchpad-long-press">
-    <property name="widget">touchpad-eventbox</property>
-    <property name="button">0</property>
-    <signal name="cancelled" handler="_onTouchpadLongPressCancelled"/>
-    <signal name="pressed" handler="_onTouchpadLongPressPressed"/>
-    <signal name="end" handler="_onTouchpadLongPressEnd"/>
-  </object>
 </interface>

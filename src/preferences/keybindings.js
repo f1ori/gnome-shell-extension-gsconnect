@@ -84,7 +84,8 @@ export const ShortcutChooserDialog = GObject.registerClass({
         this.summary_label.label = value;
     }
 
-    vfunc_key_press_event(event) {
+    key_press_event(event) {
+        // TODO register
         let keyvalLower = Gdk.keyval_to_lower(event.keyval);
         let realMask = event.state & Gtk.accelerator_get_default_mod_mask();
 

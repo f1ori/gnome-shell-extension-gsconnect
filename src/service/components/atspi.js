@@ -48,19 +48,18 @@ export default class Controller {
 
         // Try to read modifier keycodes from Gdk
         try {
-            const keymap = Gdk.Keymap.get_for_display(this._display);
             let modifier;
 
-            modifier = keymap.get_entries_for_keyval(Gdk.KEY_Alt_L)[1][0];
+            modifier = this._display.map_keyval(Gdk.KEY_Alt_L)[1][0];
             XKeycode.Alt_L = modifier.keycode;
 
-            modifier = keymap.get_entries_for_keyval(Gdk.KEY_Control_L)[1][0];
+            modifier = this._display.map_keyval(Gdk.KEY_Control_L)[1][0];
             XKeycode.Control_L = modifier.keycode;
 
-            modifier = keymap.get_entries_for_keyval(Gdk.KEY_Shift_L)[1][0];
+            modifier = this._display.map_keyval(Gdk.KEY_Shift_L)[1][0];
             XKeycode.Shift_L = modifier.keycode;
 
-            modifier = keymap.get_entries_for_keyval(Gdk.KEY_Super_L)[1][0];
+            modifier = this._display.map_keyval(Gdk.KEY_Super_L)[1][0];
             XKeycode.Super_L = modifier.keycode;
         } catch (e) {
             debug('using default modifier keycodes');
